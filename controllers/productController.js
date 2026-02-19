@@ -51,7 +51,9 @@ const getaProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
+    const { ProductName, description, price, stock, imageUrl }=req.body
     const product = await Product.findByPk(req.params.id)
+    console.log(product)
     if (!product) {
       return res.status(404).json({ message: "Product not found" })
     }

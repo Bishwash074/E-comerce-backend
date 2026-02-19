@@ -12,6 +12,6 @@ router.delete('/deleteProduct/:id',isAdmin,isAuthenticated,deleteProduct)
 
 // Public
 router.get('/getAll',getAllProducts)
-router.get('/getsingle',getaProduct)
+router.get('/getsingle/:id',getaProduct)
 
 module.exports=router

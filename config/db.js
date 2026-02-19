@@ -11,7 +11,8 @@ const connectDB=async()=>{
   try {
     await sequelize.authenticate();
     console.log("PostgreSQL Connected sucessfully")
-    await sequelize.sync({alert:true});
+    require("../modal");
+    await sequelize.sync({force:false,alter:false});
     console.log("Database Synced")
   } catch (error) {
     console.error("Database connection failed:",error)
