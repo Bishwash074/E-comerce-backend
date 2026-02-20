@@ -3,6 +3,7 @@ const cors = require('cors')
 const { connectDB } = require("./config/db");
 const authRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoute")
+const cartRoutes=require("./routes/cartRoutes")
 const seedAdmin= require("./config/seedAdmin");
 require("dotenv").config();
 
@@ -17,6 +18,7 @@ connectDB().then(() => {
 
 app.use("/api/auth", authRoutes)
 app.use('/api/products', productRoutes)
+app.use('/api/carts',cartRoutes)
 
 const PORT = process.env.PORT || 5000;
 

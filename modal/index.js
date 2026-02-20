@@ -4,8 +4,7 @@ const Cart=require('./cartModal')
 const CartItem=require('./cartItemModal')
 
 User.hasOne(Cart,{foreignKey:"userId"})
-Cart.belongsTo(User)
-
+Cart.belongsTo(User,{foreignKey:"userId"})
 Cart.belongsToMany(Product,{through:CartItem})
 
 Product.belongsToMany(Cart,{through:CartItem})

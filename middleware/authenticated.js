@@ -3,13 +3,13 @@ const User = require('../modal/userModal')
 
 const isAuthenticated = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader)
+  //console.log(authHeader)
 
   if (!authHeader || ! authHeader.startsWith("Bearer")) {
     return res.status(401).json({ message: "Unauthorized access" });
   }
   const token = authHeader.split(" ")[1];
-  console.log(token)
+  //console.log(token)
 
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET)

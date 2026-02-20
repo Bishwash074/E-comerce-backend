@@ -6,7 +6,7 @@ const addToCart = async (req, res) => {
     const { productId, quantity } = req.body
     const userId = req.user.id
     // find or creatusers cart
-    const cart = await Cart.findOne({ where: { userId } })
+    let cart = await Cart.findOne({ where: { userId } })
     if (!cart) {
       cart = await Cart.create({ userId });
     }
@@ -33,3 +33,28 @@ const addToCart = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 }
+
+const getCart = async (req, res) => {
+  try {
+    const userId = req.user.id
+    console.log(userId)
+
+    const cart = await Cart.findOne({
+      where: { userId },
+      include: {
+        model: Product,
+        through: { attributes: ["quantity"] }
+      }
+    })
+
+    if (!cart) {
+      return res.status(404).json({ message: "Cart is empty" });
+    }
+    res.status(200).json(cart)
+  } catch (error) {
+    console.error("GET CART ERROR:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+
+module.exports = { addToCart ,getCart}
