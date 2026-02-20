@@ -57,4 +57,32 @@ const getCart = async (req, res) => {
   }
 }
 
-module.exports = { addToCart ,getCart}
+const UpdateCardItem = async (req, res) => {
+  try {
+    const userId = req.user.id
+    const { productId } = req.params
+    const { quantity } = req.body
+
+    const cart = await Cart.findOne({ where: { userId } })
+    if (!cart) {
+      return res.status(400).json({ message: "Cart not found" })
+    }
+
+    const cartItem = await CartItem.findOne({
+      where: { CartId: cart.id, productId: productId }
+    })
+
+    if (!cartItem) {
+      return res.status(404).json({ message: "Product not found in cart" });
+    }
+    cartItem.quantity = quantity;
+    await cartItem.save();
+
+    res.status(200).json({ message: "Cart updated successfully" });
+  } catch (error) {
+    console.error("UPDATE CART ERROR:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+
+module.exports = { addToCart, getCart,UpdateCardItem }
