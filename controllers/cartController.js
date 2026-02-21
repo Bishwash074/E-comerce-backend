@@ -85,4 +85,28 @@ const UpdateCardItem = async (req, res) => {
   }
 }
 
-module.exports = { addToCart, getCart,UpdateCardItem }
+const deleteCartItem = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { productId } = req.params;
+
+    const cart = await Cart.findOne({ where: { userId } })
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" })
+    }
+    const cartItem = await CartItem.findOne({
+      where: { CartId: cart.id, ProductId: productId }
+    })
+    if (!cartItem)
+      return res.status(404).json({ message: "Product not found in cart" });
+
+    await cartItem.destroy();
+
+    res.status(200).json({ message: "Product removed from cart successfully" });
+  } catch (error) {
+    console.error("REMOVE CART ITEM ERROR:", error.message);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+
+module.exports = { addToCart, getCart, UpdateCardItem ,deleteCartItem}
